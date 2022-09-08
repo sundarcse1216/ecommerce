@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="LOG_FILE_PATH" value="logs/ecommservice.log"/>
+    <property name="BACKUP_LOG_FILE_PATH" value="logs/archived/ecommservice.%d{yyyy-MM-dd}"/>
+
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] [%X{correlationId}] [%level] [%logger] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="DayRollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE_PATH}</file>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] [%X{correlationId}] [%level] [%logger] - %msg%n</pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${BACKUP_LOG_FILE_PATH}.log</fileNamePattern>
+            <maxHistory>10</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+    </appender>
+
+<!--    <appender name="SizeRollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <file>${LOG_FILE_PATH}</file>-->
+<!--        <encoder>-->
+<!--            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] [%X{correlationId}] [%level] [%logger] - %msg%n</pattern>-->
+<!--        </encoder>-->
+
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">-->
+<!--            <fileNamePattern>${BACKUP_LOG_FILE_PATH}.%i.log</fileNamePattern>-->
+<!--            <maxFileSize>1MB</maxFileSize>-->
+<!--            <maxHistory>30</maxHistory>-->
+<!--            <totalSizeCap>10MB</totalSizeCap>-->
+<!--            <cleanHistoryOnStart>true</cleanHistoryOnStart>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
+
+    <root level="INFO">
+        <appender-ref ref="Console" />
+        <appender-ref ref="DayRollingFile" />
+<!--        <appender-ref ref="SizeRollingFile" />-->
+    </root>
+</configuration>
