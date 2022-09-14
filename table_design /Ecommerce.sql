@@ -1,0 +1,100 @@
+CREATE SCHEMA "ecommerce";
+
+CREATE TABLE "ecommerce"."users" (
+  "id" SERIAL PRIMARY KEY,
+  "user_name" varchar,
+  "first_name" varchar,
+  "last_name" varchar,
+  "nick_name" varchar,
+  "email" varchar,
+  "mobile_no" varchar,
+  "dob" date,
+  "status" boolean,
+  "created_at" datetime DEFAULT (now()),
+  "created_by" varchar,
+  "modified_at" datetime,
+  "modified_by" varchar
+);
+
+CREATE TABLE "ecommerce"."products" (
+  "id" int PRIMARY KEY,
+  "name" varchar,
+  "merchant_id" int NOT NULL,
+  "price" int,
+  "status" boolean,
+  "created_at" datetime DEFAULT (now()),
+  "created_by" varchar,
+  "modified_at" datetime,
+  "modified_by" varchar
+);
+
+CREATE TABLE "ecommerce"."inventories" (
+  "id" int,
+  "quantity" int,
+  "status" boolean
+);
+
+CREATE TABLE "ecommerce"."categories" (
+  "id" int,
+  "name" varchar,
+  "status" boolean,
+  "created_at" datetime DEFAULT (now()),
+  "created_by" varchar,
+  "modified_at" datetime,
+  "modified_by" varchar
+);
+
+CREATE TABLE "ecommerce"."sub_categories" (
+  "id" int,
+  "name" varchar,
+  "status" boolean,
+  "created_at" datetime DEFAULT (now()),
+  "created_by" varchar,
+  "modified_at" datetime,
+  "modified_by" varchar
+);
+
+CREATE TABLE "ecommerce"."tags" (
+  "id" int,
+  "name" varchar,
+  "description" varchar,
+  "status" boolean,
+  "created_at" datetime DEFAULT (now()),
+  "created_by" varchar,
+  "modified_at" datetime,
+  "modified_by" varchar
+);
+
+CREATE TABLE "ecommerce"."posts" (
+  "id" int,
+  "comment" varchar,
+  "status" boolean
+);
+
+CREATE TABLE "ecommerce"."orders" (
+  "id" int,
+  "quantity" int
+);
+
+CREATE TABLE "ecommerce"."payments" (
+  "id" int,
+  "amount" float8,
+  "paid" float8,
+  "status" boolean
+);
+
+ALTER TABLE "ecommerce"."orders" ADD FOREIGN KEY ("id") REFERENCES "ecommerce"."users" ("id");
+
+ALTER TABLE "ecommerce"."categories" ADD FOREIGN KEY ("id") REFERENCES "ecommerce"."products" ("id");
+
+ALTER TABLE "ecommerce"."sub_categories" ADD FOREIGN KEY ("id") REFERENCES "ecommerce"."categories" ("id");
+
+ALTER TABLE "ecommerce"."tags" ADD FOREIGN KEY ("id") REFERENCES "ecommerce"."products" ("id");
+
+ALTER TABLE "ecommerce"."inventories" ADD FOREIGN KEY ("id") REFERENCES "ecommerce"."products" ("id");
+
+ALTER TABLE "ecommerce"."orders" ADD FOREIGN KEY ("id") REFERENCES "ecommerce"."payments" ("id");
+
+ALTER TABLE "ecommerce"."products" ADD FOREIGN KEY ("id") REFERENCES "ecommerce"."orders" ("id");
+
+ALTER TABLE "ecommerce"."posts" ADD FOREIGN KEY ("id") REFERENCES "ecommerce"."products" ("id");
