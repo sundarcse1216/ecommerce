@@ -16,5 +16,7 @@ public class BZoneResponse implements Serializable {
     private String code;
     private String message;
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Object errors;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object data;
 }

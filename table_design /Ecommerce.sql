@@ -2,17 +2,18 @@ CREATE SCHEMA "ecommerce";
 
 CREATE TABLE "ecommerce"."users" (
   "id" SERIAL PRIMARY KEY,
-  "user_name" varchar,
-  "first_name" varchar,
-  "last_name" varchar,
+  "user_name" varchar NOT NULL,
+  "password" varchar NOT NULL,
+  "first_name" varchar NOT NULL,
+  "last_name" varchar NULL,
   "nick_name" varchar,
-  "email" varchar,
-  "mobile_no" varchar,
-  "dob" date,
-  "status" boolean,
-  "created_at" datetime DEFAULT (now()),
+  "email" varchar UNIQUE NOT NULL,
+  "mobile_no" varchar NOT NULL,
+  "dob" date NOT NULL,
+  "status" boolean NOT NULL,
+  "created_at" timestamp DEFAULT (now()),
   "created_by" varchar,
-  "modified_at" datetime,
+  "modified_at" timestamp,
   "modified_by" varchar
 );
 
