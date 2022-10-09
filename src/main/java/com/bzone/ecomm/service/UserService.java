@@ -23,12 +23,12 @@ public class UserService {
     @Autowired
     UserRepository userRepo;
 
-    @Autowired
     BZoneResponse response;
 
     @Transactional
     public BZoneResponse insertUser(Users user) {
         Users savedUser = userRepo.save(user);
+        response = new BZoneResponse();
         if (Objects.nonNull(savedUser)) {
             response.setCode(CommonConstance.CREATE_SUCCESS);
             response.setData(savedUser);
@@ -43,6 +43,7 @@ public class UserService {
     @Transactional
     public BZoneResponse updateUser(Users user, Long id) {
         Optional<Users> savedUser = userRepo.findById(id);
+        response = new BZoneResponse();
         if (savedUser.isPresent()) {
             user.setId(savedUser.get().getId());
             Users updatedUser = userRepo.save(user);
@@ -58,13 +59,14 @@ public class UserService {
 
     public BZoneResponse getUserById(Long userId) {
         Optional<Users> user = userRepo.findById(userId);
+        response = new BZoneResponse();
         if (user.isPresent()) {
             response.setCode(CommonConstance.SUCCESS_CODE);
             response.setData(user);
             response.setMessage("Success");
         } else {
 //            response.setMessage("User Not Found");
-//            response.setCode(CommonConstance.NO_CONTENT);
+            response.setCode(CommonConstance.NO_CONTENT);
             throw new RecordNotFoundException("User Not Found!");
         }
 
@@ -74,6 +76,7 @@ public class UserService {
     public BZoneResponse gelAllUser() {
 //        List<Users> users = userRepo.findAll();
         List<Users> users = userRepo.findAllByStatus(Boolean.TRUE);
+        response = new BZoneResponse();
         if (!users.isEmpty()) {
             response.setCode(CommonConstance.SUCCESS_CODE);
             response.setData(users);
@@ -88,6 +91,7 @@ public class UserService {
     @Transactional
     public BZoneResponse deleteUser(Long userId) {
         Optional<Users> user = userRepo.findById(userId);
+        response = new BZoneResponse();
         if (user.isPresent()) {
             Users savedUser = user.get();
             savedUser.setStatus(Boolean.FALSE);
@@ -104,6 +108,7 @@ public class UserService {
 
     public BZoneResponse getUserByEmail(String email) {
         Users user = userRepo.findByEmail(email);
+        response = new BZoneResponse();
         if (Objects.nonNull(user)) {
             response.setCode(CommonConstance.SUCCESS_CODE);
             response.setMessage(String.format("Username sent to '" + email));
@@ -116,6 +121,7 @@ public class UserService {
 
     public BZoneResponse getPasswordByEmail(String email) {
         Users user = userRepo.findByEmail(email);
+        response = new BZoneResponse();
         if (Objects.nonNull(user)) {
             response.setCode(CommonConstance.SUCCESS_CODE);
             response.setMessage(String.format("Password sent to '" + email));

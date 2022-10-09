@@ -4,6 +4,7 @@ import com.bzone.ecomm.dto.BZoneResponse;
 import com.bzone.ecomm.exception.RecordNotFoundException;
 import com.bzone.ecomm.logger.EcommLogger;
 import com.bzone.ecomm.util.CommonConstance;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author sundar
@@ -45,4 +45,14 @@ public class EcommerceExceptionHandler {
         return ResponseEntity.ok(response);
     }
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<BZoneResponse> handleConstraintViolationExceptions(ConstraintViolationException ex) {
+        LOGGER.info(ex.getMessage());
+        LOGGER.info(ex.getConstraintName());
+        if ("users_email_key".contains(ex.getConstraintName())) {
+            response.setErrors("Email already exist");
+        }
+        response.setCode(CommonConstance.BAD_REQUEST);
+        return ResponseEntity.ok(response);
+    }
 }
