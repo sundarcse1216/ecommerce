@@ -14,6 +14,7 @@ import java.io.Serializable;
 public class BZoneResponse implements Serializable {
 
     private String code;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object errors;
